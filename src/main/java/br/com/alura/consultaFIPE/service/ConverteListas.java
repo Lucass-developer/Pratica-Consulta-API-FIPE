@@ -5,11 +5,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.List;
 
-public class ConverteDadosListas implements IConverteDadosLIstas {
+public class ConverteListas implements IConverteListas {
     private final ObjectMapper mapper =  new ObjectMapper();
 
     @Override
-    public <T> List<T> obterDados(String json, Class<T> classe) {
+    public <T> List<T> converterListas(String json, Class<T> classe) {
         try {
             return mapper.readValue(json, mapper.getTypeFactory().constructCollectionType(List.class, classe));
         } catch (JsonProcessingException e) {

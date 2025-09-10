@@ -4,11 +4,11 @@ import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public record DadosMarcas (@JsonAlias("codigo") String codigo,
-                          @JsonAlias("nome") String nome) {
+public record DadosModelos (@JsonAlias("nome") String nome,
+                            @JsonAlias("codigo") String codigo) {
 
     @Override
     public String toString() {
-        return "Codigo: " + codigo + " - Marcas: " + nome;
+        return "Codigo: " + codigo + " - Modelo: " + nome;
     }
 }
