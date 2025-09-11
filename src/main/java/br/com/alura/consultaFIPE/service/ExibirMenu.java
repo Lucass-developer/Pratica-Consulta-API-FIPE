@@ -18,13 +18,13 @@ public class ExibirMenu {
 
             switch (numModelo) {
                 case 1: {
-                    return "carros";
+                    return "https://parallelum.com.br/fipe/api/v1/carros/marcas/";
                 }
                 case 2: {
-                    return "motos";
+                    return "https://parallelum.com.br/fipe/api/v1/motos/marcas/";
                 }
                 case 3: {
-                    return "caminhoes";
+                    return "https://parallelum.com.br/fipe/api/v1/caminhoes/marcas/";
                 }
                 default: {
                     System.out.println("Opção Invalida!");

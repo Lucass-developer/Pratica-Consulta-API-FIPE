@@ -9,6 +9,7 @@ import br.com.alura.consultaFIPE.service.ConverteDados;
 import br.com.alura.consultaFIPE.service.ConverteListas;
 import br.com.alura.consultaFIPE.service.ExibirMenu;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 
@@ -24,15 +25,14 @@ public class Main {
     public void consultaFipe() {
 
         System.out.println("***** CONSULTA FIPE *****");
-        String modelo = exibirMenu.exbirMenu();
+        String URI_BASE = exibirMenu.exbirMenu();
 
-        String endereco = "https://parallelum.com.br/fipe/api/v1/";
-        var json = consumo.obterDados(endereco + modelo + "/marcas");
+        var json = consumo.obterDados(URI_BASE);
 
         List<DadosMarcas> dadosMarcas = conversorListas.converterListas(json, DadosMarcas.class);
-        dadosMarcas.forEach(System.out::println);
-
-        String modeloEscolhido;
+        dadosMarcas.stream()
+                .sorted(Comparator.comparing(DadosMarcas::codigo))
+                .forEach(System.out::println);
 
         while (true) {
             System.out.println("Digite o Codigo do Modelo Dejesado:");
@@ -41,18 +41,18 @@ public class Main {
             if (dadosMarcas.stream().noneMatch(d -> d.codigo().equals(codigoModelo))){
                 System.out.println("Modelo Nao encontrado!");
             } else {
-                modeloEscolhido = codigoModelo;
+                URI_BASE += codigoModelo + "/modelos/";
                 break;
             }
         }
 
-        var jsonModelos = consumo.obterDados(endereco + modelo + "/marcas/" + modeloEscolhido + "/modelos");
+        var jsonModelos = consumo.obterDados(URI_BASE);
 
         DadosModelosResponse response = conversorDados.converterDados(jsonModelos, DadosModelosResponse.class);
         response.modelos().forEach(System.out::println);
 
         while (true) {
-            System.out.println("Digite o nome do modelo para melhor vizualização:");
+            System.out.println("Digite o nome do modelo para buscar:");
             var nomeEscolhido = scanner.nextLine();
 
             if (response.modelos().stream().anyMatch(m -> m.nome().toUpperCase().contains(nomeEscolhido.toUpperCase()))) {
@@ -71,12 +71,14 @@ public class Main {
 
             if (response.modelos().stream().anyMatch(m -> m.codigo().contains(codModelo))) {
 
-                var jsonDadosfinal = consumo.obterDados(endereco + modelo + "/marcas/" + modeloEscolhido + "/modelos/" + codModelo + "/anos");
+                URI_BASE += codModelo + "/anos/";
+
+                var jsonDadosfinal = consumo.obterDados(URI_BASE);
 
                 List<DadosAnos> dadosAnos = conversorListas.converterListas(jsonDadosfinal, DadosAnos.class);
 
                 for (DadosAnos ano : dadosAnos) {
-                    var jsonModelo = consumo.obterDados(endereco + modelo + "/marcas/" + modeloEscolhido + "/modelos/" + codModelo + "/anos/" + ano);
+                    var jsonModelo = consumo.obterDados(URI_BASE + ano);
 
                     Modelo novoModelo = conversorDados.converterDados(jsonModelo, Modelo.class);
 
