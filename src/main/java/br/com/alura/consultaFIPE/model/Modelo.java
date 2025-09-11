@@ -10,4 +10,15 @@ public record Modelo (@JsonAlias("Valor") String valor,
                       @JsonAlias("AnoModelo") String ano,
                       @JsonAlias("Combustivel") String tipoCombustivel,
                       @JsonAlias("MesReferencia") String mesReferencia){
+    @Override
+    public String toString() {
+        return "TABELA FIPE POR ANO:" +
+                "\nMODELO: " + modelo +
+                "\nANO: " + ano +
+                "\nVALOR: " + valor +
+                "\nMARCA: " + marca +
+                "\nCOMBUSTIVEL: " + tipoCombustivel +
+                "\nMES DE REFERENCIA: " + mesReferencia +
+                "\n";
+    }
 }

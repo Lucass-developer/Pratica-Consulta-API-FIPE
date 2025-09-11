@@ -3,6 +3,7 @@ package br.com.alura.consultaFIPE.Main;
 import br.com.alura.consultaFIPE.model.DadosAnos;
 import br.com.alura.consultaFIPE.model.DadosMarcas;
 import br.com.alura.consultaFIPE.model.DadosModelosResponse;
+import br.com.alura.consultaFIPE.model.Modelo;
 import br.com.alura.consultaFIPE.service.ConsumoApi;
 import br.com.alura.consultaFIPE.service.ConverteDados;
 import br.com.alura.consultaFIPE.service.ConverteListas;
@@ -74,9 +75,12 @@ public class Main {
 
                 List<DadosAnos> dadosAnos = conversorListas.converterListas(jsonDadosfinal, DadosAnos.class);
 
-                for (int i = 0 ; i < dadosAnos.size();) {
+                for (DadosAnos ano : dadosAnos) {
+                    var jsonModelo = consumo.obterDados(endereco + modelo + "/marcas/" + modeloEscolhido + "/modelos/" + codModelo + "/anos/" + ano);
 
-                    i++;
+                    Modelo novoModelo = conversorDados.converterDados(jsonModelo, Modelo.class);
+
+                    System.out.println(novoModelo);
                 }
                 break;
             } else {
